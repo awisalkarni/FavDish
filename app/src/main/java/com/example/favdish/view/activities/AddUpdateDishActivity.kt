@@ -19,6 +19,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,10 +31,14 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.example.favdish.R
 import com.example.favdish.adapters.CustomListItemAdapter
+import com.example.favdish.application.FavDishApplication
 import com.example.favdish.databinding.ActivityAddUpdateDishBinding
 import com.example.favdish.databinding.DialogCustomImageSelectionBinding
 import com.example.favdish.databinding.DialogCustomListBinding
+import com.example.favdish.model.entities.FavDish
 import com.example.favdish.utils.Constants
+import com.example.favdish.viewmodels.FavDishViewModel
+import com.example.favdish.viewmodels.FavDishViewModelFactory
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
@@ -56,6 +61,10 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
     private var mImagePath: String = ""
 
     private lateinit var mCustomListDialog: Dialog
+
+    private val mFavDishViewModel: FavDishViewModel by viewModels{
+        FavDishViewModelFactory((application as FavDishApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,8 +118,10 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                     val type = mBinding.etType.text.toString().trim { it <= ' ' }
                     val category = mBinding.etCategory.text.toString().trim { it <= ' ' }
                     val ingredients = mBinding.etIngredients.text.toString().trim { it <= ' ' }
-                    val cookingTimeInMinutes = mBinding.etCookingTime.text.toString().trim { it <= ' ' }
-                    val cookingDirection = mBinding.etDirectionToCook.text.toString().trim { it <= ' ' }
+                    val cookingTimeInMinutes =
+                        mBinding.etCookingTime.text.toString().trim { it <= ' ' }
+                    val cookingDirection =
+                        mBinding.etDirectionToCook.text.toString().trim { it <= ' ' }
 
                     when {
 
@@ -168,14 +179,25 @@ class AddUpdateDishActivity : AppCompatActivity(), View.OnClickListener {
                         }
                         else -> {
 
-                            // TODO Step 8: Show the Toast Message for now that you dish entry is valid.
-                            // START
-                            Toast.makeText(
-                                this@AddUpdateDishActivity,
-                                "All the entries are valid.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            // END
+                            val favDishDetails: FavDish = FavDish(
+                                mImagePath,
+                                Constants.DISH_IMAGE_SOURCE_LOCAL,
+                                title,
+                                type,
+                                category,
+                                ingredients,
+                                cookingTimeInMinutes,
+                                cookingDirection,
+                                false
+                            )
+
+                            mFavDishViewModel.insert(favDishDetails)
+
+                            Toast.makeText(this@AddUpdateDishActivity, "add success", Toast.LENGTH_SHORT)
+                                .show()
+
+                            Log.i("add", "add favdish success")
+                            finish()
                         }
                     }
                 }
