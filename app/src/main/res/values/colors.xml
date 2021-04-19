@@ -23,4 +23,7 @@
     <color name="grey_900">#212121</color>
 
     <color name="divider_line_color">#e0e0e0</color>
+
+    <color name="blue_grey_900">#263238</color>
+    <color name="grey_500">#9E9E9E</color>
 </resources>
