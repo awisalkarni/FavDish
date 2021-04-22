@@ -2,12 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.favdish">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        android:maxSdkVersion="28"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
-    <uses-permission android:name="android.permission.CAMERA"/>
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".application.FavDishApplication"
@@ -17,10 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Favdish">
-        <activity android:name=".view.activities.AddUpdateDishActivity"
+        <activity
+            android:name=".view.activities.AddUpdateDishActivity"
+            android:configChanges="orientation"
             android:label="Add Dish"
-            android:theme="@style/Theme.Favdish.NoActionBar"
-            android:configChanges="orientation">
+            android:theme="@style/Theme.Favdish">
 
         </activity>
         <activity
